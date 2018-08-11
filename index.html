@@ -92,6 +92,10 @@ var circle = chart.append("circle")
   })
   .on("mouseleave", function(d) {
       d3.selectAll("circle").attr("r", radius - 100);
+  })
+  .on("click", function(d) {
+    console.log("hi");
+    window.location = "http://www.google.com";
   });
 
 var g = chart.selectAll(".arc")
@@ -124,9 +128,28 @@ g.append("path")
                .attr("d", arc)
                .attr("stroke","none");
 })
+  .on("click", function(d) {
+      switch (d.data.name) {
+          case "one":
+            window.location = "http://github.com/kaushalpartani";
+            break;
+          case "two":
+            window.location = "http://www.facebook.com";
+            break;
+          case "three":
+            window.location = "http://www.microsoft.com";
+            break;
+          case "four":
+            window.location = "http://www.youtube.com";
+            break;
+          case "five":
+            window.location = "http://www.berkeley.edu";
+            break;
+      }
+  })
   .transition()
     .ease("exp")
-    .duration(2000)
+    .duration(1000)
     .attrTween("d", tweenPie);
 
 function tweenPie(b) {
