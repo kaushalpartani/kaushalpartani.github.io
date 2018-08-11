@@ -45,8 +45,9 @@ div.tooltip {
 <div id="content" class="center-div"></div>
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script>
-var links = [ {name: "one", value: 1},
-			{name: "two", value:  1},
+//Sources I've used: https://www.visualcinnamon.com/2015/09/placing-text-on-arcs.html
+var links = [ {name: "Github", value: 1},
+			{name: "Resume", value:  1},
 			{name: "three", value:  1},
 			{name: "four", value:  1},
 			{name: "five", value:  1} ];
@@ -130,11 +131,11 @@ g.append("path")
 })
   .on("click", function(d) {
       switch (d.data.name) {
-          case "one":
+          case "Github":
             window.location = "http://github.com/kaushalpartani";
             break;
-          case "two":
-            window.location = "http://www.facebook.com";
+          case "Resume":
+            window.location = "http://kaushalpartani.github.io/resume.html";
             break;
           case "three":
             window.location = "http://www.microsoft.com";
@@ -153,7 +154,7 @@ g.append("path")
     .attrTween("d", tweenPie);
 
 function tweenPie(b) {
-  var i = d3.interpolate({startAngle: 1.1*Math.PI, endAngle: 1.1*Math.PI}, b);
+  var i = d3.interpolate({startAngle: 1.0*Math.PI, endAngle: 1.0*Math.PI}, b);
   return function(t) { return arc(i(t)); };
 }
 
