@@ -8,13 +8,15 @@ path {
 
 html, body {
   	width: 100vh;
-	  height: 100vh;
+	height: 100vh;
 }
-
+body{
+	display:flex;
+}
 #content {
-    display:flex;
-    justify-content: center;
-    align-items: center;
+        width: 90%;
+        height: 90%;
+
 }
 div.tooltip {
     position: absolute;
@@ -36,7 +38,8 @@ div.tooltip {
      right: 0;
      bottom: 0;
      left: 0;
-
+     width: 100px;
+     height: 100px;
 }
 
 
@@ -45,9 +48,8 @@ div.tooltip {
 <div id="content" class="center-div"></div>
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script>
-//Sources I've used: https://www.visualcinnamon.com/2015/09/placing-text-on-arcs.html
-var links = [ {name: "Github", value: 1},
-			{name: "Resume", value:  1},
+var links = [ {name: "one", value: 1},
+			{name: "two", value:  1},
 			{name: "three", value:  1},
 			{name: "four", value:  1},
 			{name: "five", value:  1} ];
@@ -55,9 +57,12 @@ var links = [ {name: "Github", value: 1},
 var div = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-var margin = {top: 100, right: 100, bottom: 100, left: 100};
+var margin = {top: 50, right: 50, bottom: 50, left: 50};
 	width = document.getElementById("content").clientWidth - margin.left - margin.right; //600 - margin.left - margin.right;
 	height = document.getElementById("content").clientHeight - margin.top - margin.bottom; // 1500 - margin.top - margin.bottom;
+console.log(width);
+console.log(height);
+console.log(document.getElementsByClassName("html").clientHeight);
 
 var chart = d3.select("#content")
 				.append('svg')
@@ -82,22 +87,6 @@ var pie = d3.layout.pie()
     .endAngle(3.1*Math.PI)
     .value(function(d) { return d.value; });
 
-var circle = chart.append("circle")
-  .style("fill", "lightsteelblue")
-  .attr("cx", 0)
-  .attr("cy", 0)
-  .attr("r", radius -100)
-  .on("mouseenter", function(d) {
-      d3.select(this).transition().ease("exp").duration(1000);
-      d3.selectAll("circle").attr("r", radius - 50);
-  })
-  .on("mouseleave", function(d) {
-      d3.selectAll("circle").attr("r", radius - 100);
-  })
-  .on("click", function(d) {
-    console.log("hi");
-    window.location = "http://www.google.com";
-  });
 
 var g = chart.selectAll(".arc")
   .data(pie(links))
@@ -118,43 +107,24 @@ g.append("path")
             d3.select(this)
                .attr("stroke","white")
                .transition()
-               .duration(500)
+               .duration(1000)
                .attr("d", arcOver)
                .attr("stroke-width",6);
 
 })
   .on("mouseleave", function(d) {
-            d3.select(this).transition().ease("bounce")
-	       .duration(500)
+            d3.select(this).transition()
+	       .duration(1000)
                .attr("d", arc)
                .attr("stroke","none");
 })
-  .on("click", function(d) {
-      switch (d.data.name) {
-          case "Github":
-            window.location = "http://github.com/kaushalpartani";
-            break;
-          case "Resume":
-            window.location = "http://kaushalpartani.github.io/resume.html";
-            break;
-          case "three":
-            window.location = "http://www.microsoft.com";
-            break;
-          case "four":
-            window.location = "http://www.youtube.com";
-            break;
-          case "five":
-            window.location = "http://www.berkeley.edu";
-            break;
-      }
-  })
   .transition()
     .ease("exp")
-    .duration(1000)
+    .duration(2000)
     .attrTween("d", tweenPie);
 
 function tweenPie(b) {
-  var i = d3.interpolate({startAngle: 1.0*Math.PI, endAngle: 1.0*Math.PI}, b);
+  var i = d3.interpolate({startAngle: 1.1*Math.PI, endAngle: 1.1*Math.PI}, b);
   return function(t) { return arc(i(t)); };
 }
 

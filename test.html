@@ -9,6 +9,11 @@ path {
 html, body {
   	width: 100vh;
 	  height: 100vh;
+    font-family: "Arial";
+    fill: #606a79;
+    font-size: 30px;
+    text-align: center;
+
 }
 
 #content {
@@ -40,6 +45,8 @@ div.tooltip {
 }
 
 
+
+
 </style>
 <body>
 <div id="content" class="center-div"></div>
@@ -49,8 +56,7 @@ div.tooltip {
 var links = [ {name: "Github", value: 1},
 			{name: "Resume", value:  1},
 			{name: "three", value:  1},
-			{name: "four", value:  1},
-			{name: "five", value:  1} ];
+			{name: "four", value:  1}];
 
 var div = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -78,8 +84,8 @@ var arc = d3.svg.arc()
 
 var pie = d3.layout.pie()
     .sort(null)
-    .startAngle(1.1*Math.PI)
-    .endAngle(3.1*Math.PI)
+    .startAngle(1.275*Math.PI)
+    .endAngle(3.275*Math.PI)
     .value(function(d) { return d.value; });
 
 var circle = chart.append("circle")
@@ -106,6 +112,7 @@ var g = chart.selectAll(".arc")
 
 g.append("path")
     .attr("fill", function(d, i) { return color(i); })
+    .attr("id", function(d, i) {return "arc" + i;})
     .on("mouseenter", function(d) {
 
  	     var endAngle = d.endAngle;
@@ -152,6 +159,16 @@ g.append("path")
     .ease("exp")
     .duration(1000)
     .attrTween("d", tweenPie);
+
+chart.selectAll(".arcText")
+  .data(links)
+    .enter().append("text")
+  .attr("class", "arcText")
+  .attr("dy", -13)
+    .append("textPath")
+  .attr("xlink:href", function(d, i) {return "#arc" + i; })
+  .text(function(d) { return(d.name)});
+
 
 function tweenPie(b) {
   var i = d3.interpolate({startAngle: 1.0*Math.PI, endAngle: 1.0*Math.PI}, b);
