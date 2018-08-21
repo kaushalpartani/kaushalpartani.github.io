@@ -55,8 +55,8 @@ div.tooltip {
 //Sources I've used: https://www.visualcinnamon.com/2015/09/placing-text-on-arcs.html
 var links = [ {name: "Github", value: 1},
 			{name: "Resume", value:  1},
-			{name: "three", value:  1},
-			{name: "four", value:  1}];
+			{name: "About Me", value:  1},
+			{name: "Contact", value:  1}];
 
 var div = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -84,8 +84,8 @@ var arc = d3.svg.arc()
 
 var pie = d3.layout.pie()
     .sort(null)
-    .startAngle(1.275*Math.PI)
-    .endAngle(3.275*Math.PI)
+    .startAngle(1.28*Math.PI)
+    .endAngle(3.28*Math.PI)
     .value(function(d) { return d.value; });
 
 var circle = chart.append("circle")
@@ -144,14 +144,11 @@ g.append("path")
           case "Resume":
             window.location = "http://kaushalpartani.github.io/resume.html";
             break;
-          case "three":
+          case "About Me":
             window.location = "http://www.microsoft.com";
             break;
-          case "four":
+          case "Contact":
             window.location = "http://www.youtube.com";
-            break;
-          case "five":
-            window.location = "http://www.berkeley.edu";
             break;
       }
   })
