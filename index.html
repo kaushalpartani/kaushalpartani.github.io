@@ -136,10 +136,12 @@
       .attr("cy", 0)
       .attr("r", circlerad)
       .on("mouseenter", function(d) {
+        d3.select(this).style("opacity", .3);
         d3.select(this).transition().ease("exp").duration(1000);
         d3.selectAll("circle").attr("r", innerrad);
       })
       .on("mouseleave", function(d) {
+        d3.select(this).style("opacity", 1);
         d3.selectAll("circle").attr("r", circlerad);
       })
       .on("click", function(d) {
