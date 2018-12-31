@@ -14,6 +14,7 @@
     fill: #606a79;
     font-size: 2.5vh;
     text-align: center;
+    overflow: hidden;
 
   }
 
@@ -58,7 +59,15 @@
 </style>
 
 <body>
-  <div id="content" class="center-div"></div>
+  <svg>
+    <defs>
+      <pattern id="face" height="100%" width="100%" patternContentUnits="objectBoundingBox">
+        <image height="1" width="1" preserveAspectRatio="none" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://raw.githubusercontent.com/kaushalpartani/kaushalpartani.github.io/master/static/images/DSC_0020.JPG"></image>
+      </pattern>
+    </defs>
+  </svg>
+  <div id="content" class="center-div">
+  </div>
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script>
     //Sources I've used: https://www.visualcinnamon.com/2015/09/placing-text-on-arcs.html
@@ -122,7 +131,7 @@
       });
 
     var circle = chart.append("circle")
-      .style("fill", "lightsteelblue")
+      .style("fill", "url(#face)")
       .attr("cx", 0)
       .attr("cy", 0)
       .attr("r", circlerad)
@@ -137,7 +146,10 @@
         console.log("hi");
         window.location = "http://kaushalpartani.github.io/simplenavbar.html"
       });
-
+    var z = chart.append("svg:image")
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("w")
     var g = chart.selectAll(".arc")
       .data(pie(links))
       .enter().append("g")
