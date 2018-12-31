@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-path {
+  path {
     stroke: #ffffff;
     stroke-width: 3px;
-}
+  }
 
-html, body {
+  html,
+  body {
     height: 100vh;
-    width: 100vh;
+    width: 100vw;
     font-family: "Arial";
     fill: #606a79;
-    font-size: 1.5rem;
+    font-size: 2.5vh;
     text-align: center;
 
-}
+  }
 
-#content {
-    display:flex;
+  #content {
+    display: flex;
     justify-content: center;
     align-items: center;
     position: fixed;
-    left: 10vh;
-    right: 10vh;
+    left: 10vw;
+    right: 10vw;
     top: 10vh;
     bottom: 10vh;
-}
-div.tooltip {
+  }
+
+  div.tooltip {
     position: absolute;
     text-align: center;
     width: 60px;
@@ -37,121 +39,142 @@ div.tooltip {
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
-}
-.center-div
-{
-     position: absolute;
-     margin: auto;
-     top: 0;
-     right: 0;
-     bottom: 0;
-     left: 0;
+  }
 
-}
+  .center-div {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 
-svg {
-  display: block;
-  margin: auto;
-}
+  }
 
-
-
-
+  svg {
+    display: block;
+    margin: auto;
+  }
 </style>
+
 <body>
-<div id="content" class="center-div"></div>
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script>
-//Sources I've used: https://www.visualcinnamon.com/2015/09/placing-text-on-arcs.html
-var links = [ {name: "Github", value: 1},
-			{name: "Resume", value:  1},
-			{name: "About Me", value:  1},
-			{name: "Contact", value:  1}];
+  <div id="content" class="center-div"></div>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script>
+    //Sources I've used: https://www.visualcinnamon.com/2015/09/placing-text-on-arcs.html
+    var links = [{
+        name: "Github",
+        value: 1
+      },
+      {
+        name: "Resume",
+        value: 1
+      },
+      {
+        name: "About Me",
+        value: 1
+      },
+      {
+        name: "Contact",
+        value: 1
+      }
+    ];
 
-var div = d3.select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
-var margin = {top: 100, right: 100, bottom: 100, left: 100};
-	width = document.getElementById("content").clientWidth - margin.left - margin.right; //600 - margin.left - margin.right;
-	height = document.getElementById("content").clientHeight - margin.top - margin.bottom; // 1500 - margin.top - margin.bottom;
+    var div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+    var margin = {
+      top: 100,
+      right: 100,
+      bottom: 100,
+      left: 100
+    };
+    width = document.getElementById("content").clientWidth - margin.left - margin.right; //600 - margin.left - margin.right;
+    height = document.getElementById("content").clientHeight - margin.top - margin.bottom; // 1500 - margin.top - margin.bottom;
 
-var chart = d3.select("#content")
-				.append('svg')
-			    .attr("width", width + margin.left + margin.right)
-			    .attr("height", height + margin.top + margin.bottom)
-			   .append("g")
-    			.attr("transform", "translate(" + ((width/2)+margin.left) + "," + ((height/2)+margin.top) + ")");
+    var chart = d3.select("#content")
+      .append('svg')
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + ((width / 2) + margin.left) + "," + ((height / 2) + margin.top) + ")");
 
 
-var radius = Math.min(width, height) / 2;
+    var radius = Math.min(width, height) / 2;
 
-var innerrad = radius - Math.min(width, height) / 15;
-var circlerad = radius - (2*Math.min(width, height) / 15);
-var outterrad = radius + Math.min(width, height) / 15;
+    var innerrad = radius - Math.min(width, height) / 15;
+    var circlerad = radius - (2 * Math.min(width, height) / 15);
+    var outterrad = radius + Math.min(width, height) / 15;
 
-var color = d3.scale.ordinal()
-	.range(["#3399FF", "#5DAEF8", "#86C3FA", "#ADD6FB", "#D6EBFD"]);
+    var color = d3.scale.ordinal()
+      .range(["#3399FF", "#5DAEF8", "#86C3FA", "#ADD6FB", "#D6EBFD"]);
 
-var arc = d3.svg.arc()
-    .outerRadius(radius)
-    .innerRadius(innerrad);
+    var arc = d3.svg.arc()
+      .outerRadius(radius)
+      .innerRadius(innerrad);
 
-var pie = d3.layout.pie()
-    .sort(null)
-    .startAngle(1.28*Math.PI)
-    .endAngle(3.28*Math.PI)
-    .value(function(d) { return d.value; });
+    var pie = d3.layout.pie()
+      .sort(null)
+      .startAngle(1.28 * Math.PI)
+      .endAngle(3.28 * Math.PI)
+      .value(function(d) {
+        return d.value;
+      });
 
-var circle = chart.append("circle")
-  .style("fill", "lightsteelblue")
-  .attr("cx", 0)
-  .attr("cy", 0)
-  .attr("r", circlerad)
-  .on("mouseenter", function(d) {
-      d3.select(this).transition().ease("exp").duration(1000);
-      d3.selectAll("circle").attr("r", innerrad);
-  })
-  .on("mouseleave", function(d) {
-      d3.selectAll("circle").attr("r", circlerad);
-  })
-  .on("click", function(d) {
-    console.log("hi");
-    window.location = "http://kaushalpartani.github.io/simplenavbar.html"
-  });
+    var circle = chart.append("circle")
+      .style("fill", "lightsteelblue")
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("r", circlerad)
+      .on("mouseenter", function(d) {
+        d3.select(this).transition().ease("exp").duration(1000);
+        d3.selectAll("circle").attr("r", innerrad);
+      })
+      .on("mouseleave", function(d) {
+        d3.selectAll("circle").attr("r", circlerad);
+      })
+      .on("click", function(d) {
+        console.log("hi");
+        window.location = "http://kaushalpartani.github.io/simplenavbar.html"
+      });
 
-var g = chart.selectAll(".arc")
-  .data(pie(links))
-.enter().append("g")
-  .attr("class", "arc");
+    var g = chart.selectAll(".arc")
+      .data(pie(links))
+      .enter().append("g")
+      .attr("class", "arc");
 
-g.append("path")
-    .attr("fill", function(d, i) { return color(i); })
-    .attr("id", function(d, i) {return "arc" + i;})
-    .on("mouseenter", function(d) {
+    g.append("path")
+      .attr("fill", function(d, i) {
+        return color(i);
+      })
+      .attr("id", function(d, i) {
+        return "arc" + i;
+      })
+      .on("mouseenter", function(d) {
 
- 	     var endAngle = d.endAngle;
-             var startAngle = d.startAngle;
+        var endAngle = d.endAngle;
+        var startAngle = d.startAngle;
 
-                  var arcOver = d3.svg.arc()
-        .outerRadius(outterrad).endAngle(endAngle).startAngle(startAngle)
-	.innerRadius(innerrad).endAngle(endAngle).startAngle(startAngle);
+        var arcOver = d3.svg.arc()
+          .outerRadius(outterrad).endAngle(endAngle).startAngle(startAngle)
+          .innerRadius(innerrad).endAngle(endAngle).startAngle(startAngle);
 
-            d3.select(this)
-               .attr("stroke","white")
-               .transition()
-               .duration(500)
-               .attr("d", arcOver)
-               .attr("stroke-width",6);
+        d3.select(this)
+          .attr("stroke", "white")
+          .transition()
+          .duration(500)
+          .attr("d", arcOver)
+          .attr("stroke-width", 6);
 
-})
-  .on("mouseleave", function(d) {
-            d3.select(this).transition().ease("bounce")
-	       .duration(500)
-               .attr("d", arc)
-               .attr("stroke","none");
-})
-  .on("click", function(d) {
-      switch (d.data.name) {
+      })
+      .on("mouseleave", function(d) {
+        d3.select(this).transition().ease("bounce")
+          .duration(500)
+          .attr("d", arc)
+          .attr("stroke", "none");
+      })
+      .on("click", function(d) {
+        switch (d.data.name) {
           case "Github":
             window.location = "http://github.com/kaushalpartani";
             break;
@@ -164,28 +187,37 @@ g.append("path")
           case "Contact":
             window.location = "http://kaushalpartani.github.io/simplenavbar.html";
             break;
-      }
-  })
-  .transition()
-    .ease("exp")
-    .duration(1000)
-    .attrTween("d", tweenPie);
+        }
+      })
+      .transition()
+      .ease("exp")
+      .duration(1000)
+      .attrTween("d", tweenPie);
 
-chart.selectAll(".arcText")
-  .data(links)
-    .enter().append("text")
-  .attr("class", "arcText")
-  .attr("dy", -13)
-    .append("textPath")
-  .attr("xlink:href", function(d, i) {return "#arc" + i; })
-  .text(function(d) { return(d.name)});
+    chart.selectAll(".arcText")
+      .data(links)
+      .enter().append("text")
+      .attr("class", "arcText")
+      .attr("dy", -13)
+      .append("textPath")
+      .attr("xlink:href", function(d, i) {
+        return "#arc" + i;
+      })
+      .text(function(d) {
+        return (d.name)
+      });
 
 
-function tweenPie(b) {
-  var i = d3.interpolate({startAngle: 1.0*Math.PI, endAngle: 1.0*Math.PI}, b);
-  return function(t) { return arc(i(t)); };
-}
-
-</script>
+    function tweenPie(b) {
+      var i = d3.interpolate({
+        startAngle: 1.0 * Math.PI,
+        endAngle: 1.0 * Math.PI
+      }, b);
+      return function(t) {
+        return arc(i(t));
+      };
+    }
+  </script>
 </body>
+
 </html>
