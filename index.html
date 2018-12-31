@@ -21,10 +21,10 @@ html, body {
     justify-content: center;
     align-items: center;
     position: fixed;
-    left: 3vh;
-    right: 3vh;
-    top: 3vh;
-    bottom: 3vh;
+    left: 10vh;
+    right: 10vh;
+    top: 10vh;
+    bottom: 10vh;
 }
 div.tooltip {
     position: absolute;
@@ -71,7 +71,7 @@ var links = [ {name: "Github", value: 1},
 var div = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-var margin = {top: 0, right: 00, bottom: 00, left: 00};
+var margin = {top: 100, right: 100, bottom: 100, left: 100};
 	width = document.getElementById("content").clientWidth - margin.left - margin.right; //600 - margin.left - margin.right;
 	height = document.getElementById("content").clientHeight - margin.top - margin.bottom; // 1500 - margin.top - margin.bottom;
 
@@ -85,12 +85,16 @@ var chart = d3.select("#content")
 
 var radius = Math.min(width, height) / 2;
 
+var innerrad = radius - Math.min(width, height) / 15;
+var circlerad = radius - (2*Math.min(width, height) / 15);
+var outterrad = radius + Math.min(width, height) / 15;
+
 var color = d3.scale.ordinal()
 	.range(["#3399FF", "#5DAEF8", "#86C3FA", "#ADD6FB", "#D6EBFD"]);
 
 var arc = d3.svg.arc()
     .outerRadius(radius)
-    .innerRadius(radius - 50);
+    .innerRadius(innerrad);
 
 var pie = d3.layout.pie()
     .sort(null)
@@ -102,17 +106,17 @@ var circle = chart.append("circle")
   .style("fill", "lightsteelblue")
   .attr("cx", 0)
   .attr("cy", 0)
-  .attr("r", radius -100)
+  .attr("r", circlerad)
   .on("mouseenter", function(d) {
       d3.select(this).transition().ease("exp").duration(1000);
-      d3.selectAll("circle").attr("r", radius - 50);
+      d3.selectAll("circle").attr("r", innerrad);
   })
   .on("mouseleave", function(d) {
-      d3.selectAll("circle").attr("r", radius - 100);
+      d3.selectAll("circle").attr("r", circlerad);
   })
   .on("click", function(d) {
     console.log("hi");
-    window.location = "http://www.kaushalpartani.github.io/simplenavbar.html"
+    window.location = "http://kaushalpartani.github.io/simplenavbar.html"
   });
 
 var g = chart.selectAll(".arc")
@@ -129,8 +133,8 @@ g.append("path")
              var startAngle = d.startAngle;
 
                   var arcOver = d3.svg.arc()
-        .outerRadius(radius + 50).endAngle(endAngle).startAngle(startAngle)
-	.innerRadius(radius-50).endAngle(endAngle).startAngle(startAngle);
+        .outerRadius(outterrad).endAngle(endAngle).startAngle(startAngle)
+	.innerRadius(innerrad).endAngle(endAngle).startAngle(startAngle);
 
             d3.select(this)
                .attr("stroke","white")
